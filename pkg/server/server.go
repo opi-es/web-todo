@@ -3,9 +3,15 @@ package server
 import (
 	"log"
 	"net/http"
+
+	"github.com/opi-es/web-todo/pkg/api"
 )
 
 func Start(port string, webDir string) {
+	// Инициализируем API обработчики
+	api.Init()
+
+	// Обработчик статических файлов
 	fs := http.FileServer(http.Dir(webDir))
 	http.Handle("/", fs)
 
