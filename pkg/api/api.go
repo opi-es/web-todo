@@ -8,7 +8,8 @@ import (
 
 func Init() {
 	http.HandleFunc("/api/nextdate", nextDateHandler)
-	http.HandleFunc("/api/task", taskHandler) // Добавляем новый обработчик
+	http.HandleFunc("/api/task", taskHandler)
+	http.HandleFunc("/api/tasks", TasksHandler) // Добавляем новый обработчик
 }
 
 func nextDateHandler(w http.ResponseWriter, r *http.Request) {

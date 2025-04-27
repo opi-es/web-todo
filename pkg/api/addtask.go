@@ -16,7 +16,7 @@ type taskRequest struct {
 }
 
 type taskResponse struct {
-	ID    int64  `json:"id,omitempty"`
+	ID    string `json:"id,omitempty"` // Меняем int64 на string
 	Error string `json:"error,omitempty"`
 }
 
@@ -25,12 +25,6 @@ func addTaskHandler(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		writeJSON(w, http.StatusBadRequest, taskResponse{Error: "Invalid JSON format"})
-		return
-	}
-
-	// Валидация заголовка
-	if req.Title == "" {
-		writeJSON(w, http.StatusBadRequest, taskResponse{Error: "Task title is required"})
 		return
 	}
 
@@ -91,4 +85,8 @@ func writeJSON(w http.ResponseWriter, status int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(data)
+}
+
+func writeJSONError(w http.ResponseWriter, message string, statusCode int) {
+	writeJSON(w, statusCode, map[string]string{"error": message})
 }
